@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const usrSchema = mongoose.Schema(
     {
@@ -12,7 +13,7 @@ const usrSchema = mongoose.Schema(
             type: String,
             required: true
         },
-        usrname:{
+        usrName:{
             type: String,
             required: true,
             unique: true
@@ -36,20 +37,35 @@ const usrSchema = mongoose.Schema(
 
 const usrModel = mongoose.model("users",usrSchema)
 
-const roleSchema = mongoose.Schema(
-    {
-        role: {
-            type: String,
-            required: true
-        }
-    },
-    {
-        timestamps: true
-    }
-)
+router.get('/signup',async(req,res)=>{
+    console.log("Signup display API is working...");
+    res.send(await usrModel.find());
+})
+router.post('/signupdet',async(req,res)=>{
+    console.log("Signup API working...")
 
-router.post('/login',(req,res)=>{
-    res.send("Login API working...")
+    const data = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        usrName: req.body.usrName,
+        email: req.body.email,
+        password: req.body.password,
+        profileImage: req.body.profileImage
+    }
+
+    const existingUsr = await usrModel.findOne({name: data.usrName});
+
+    if(existingUsr){
+        res.send("User already exits!");
+    }else{
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+
+        data.password = hashedPassword;
+
+        const usrdata = await usrModel.insertMany(data);
+        console.log(usrdata);
+    }
 })
 
 
