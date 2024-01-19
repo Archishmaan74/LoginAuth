@@ -16,12 +16,10 @@ const usrSchema = mongoose.Schema(
         usrName:{
             type: String,
             required: true,
-            unique: true
         },
         email:{
             type: String,
             required: true,
-            unique: true
         },
         password:{
             type: String,
@@ -29,7 +27,6 @@ const usrSchema = mongoose.Schema(
         },
         profileImage:{
             type: String,
-            required: false,
             default: "https://www.kindpng.com/picc/m/24-248729_stockvader-predicted-adig-user-profile-image-png-transparent.png"
         }
     }
@@ -41,8 +38,10 @@ router.get('/signup',async(req,res)=>{
     console.log("Signup display API is working...");
     res.send(await usrModel.find());
 })
+
 router.post('/signupdet',async(req,res)=>{
     console.log("Signup API working...")
+    console.log("Request Body:", req.body);
 
     const data = {
         firstName: req.body.firstName,
@@ -53,18 +52,24 @@ router.post('/signupdet',async(req,res)=>{
         profileImage: req.body.profileImage
     }
 
-    const existingUsr = await usrModel.findOne({name: data.usrName});
-
-    if(existingUsr){
-        res.send("User already exits!");
-    }else{
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(data.password, saltRounds);
-
-        data.password = hashedPassword;
-
-        const usrdata = await usrModel.insertMany(data);
-        console.log(usrdata);
+    try{
+        const existingUsr = await usrModel.findOne({usrName: data.usrName});
+        console.log("Request Body usrName: ", data.usrName);
+        
+        if(existingUsr){
+            res.send("User already exits!");
+        }else{
+            const saltRounds = 10;
+            const hashedPassword = await bcrypt.hash(data.password, saltRounds);
+    
+            data.password = hashedPassword;
+    
+            const usrdata = await usrModel.insertMany(data);
+            console.log(usrdata);
+        }
+    }catch(err){
+        console.log(err)
+        res.status(400).json({ message: err.message });
     }
 })
 
