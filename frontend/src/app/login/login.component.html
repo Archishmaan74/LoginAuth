@@ -3,11 +3,12 @@
         <h1>Login Auth</h1>
     </div><br><br>
     <div style="text-align: center;">
-        User Name: <input type="text" required><br><br>
-        Password: <input type="text" required><br><br>
+        User Name: <input type="text" [(ngModel)]="data.usrName" required><br><br>
+        Password: <input type="text" [(ngModel)]="data.password" required><br><br>
     </div>
     <div style="text-align: center;">
-        <button class="btn btn-primary">Login</button>
+        <button class="btn btn-primary" (click)="logIn(data)"
+        >Login</button>
         <p>New user? <a [routerLink]="['/signup']">Sign UP</a></p>
     </div>
 </div>

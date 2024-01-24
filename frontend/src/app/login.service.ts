@@ -10,7 +10,15 @@ export class LoginService {
 
    }
 
+   display(){
+    return this.httpclient.get("http://localhost:3000/display");
+   }
+
    signIn(data: any){
     return this.httpclient.post("http://localhost:3000/signup",data);
+   }
+
+   logIn(data: any){
+    return this.httpclient.post("http://localhost:3000/loggedin",data);
    }
 }
