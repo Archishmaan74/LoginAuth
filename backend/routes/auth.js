@@ -32,7 +32,13 @@ const usrSchema = mongoose.Schema(
     }
 )
 
-const usrModel = mongoose.model("users",usrSchema)
+const usrModel = mongoose.model("user",usrSchema)
+
+router.get("/display",async(req,res)=>{
+    console.log("display API getting hit...");
+    const data = await usrModel.find({})
+    res.send(data);
+})
 
 router.post('/signup',async(req,res)=>{
     console.log("Signup API working...")
@@ -68,7 +74,25 @@ router.post('/signup',async(req,res)=>{
     }
 })
 
-router.post("/")
+router.post("/loggedin",async(req,res)=>{
+    console.log("loggedin API is working...");
+    try{
+        const check = await usrModel.findOne({usrName: req.body.usrName});
+        if(!check){
+            res.send("User not found...");
+        }
+        else{
+            const passwordMatch = await bcrypt.compare(req.body.password, check.password);
+            if(passwordMatch){
+                res.redirect("http://localhost:4200/display");
+            }else{
+                res.send("Incorrect password!")
+            }
+        }
+    }catch{
+        res.send("Incorrect details passed...")
+    }
+})
 
 
 module.exports = router;
