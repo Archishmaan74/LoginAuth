@@ -34,7 +34,7 @@ const usrSchema = mongoose.Schema(
 
 const usrModel = mongoose.model("users",usrSchema)
 
-router.get('/signup',async(req,res)=>{
+router.get('/loggedin',async(req,res)=>{
     console.log("Signup display API is working...");
     res.send(await usrModel.find());
 })
