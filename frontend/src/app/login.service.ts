@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,5 +6,15 @@ import { Injectable } from '@angular/core';
 })
 export class LoginService {
 
-  constructor() { }
+  constructor(private httpclient: HttpClient) {
+
+   }
+
+   getData(){
+    return this.httpclient.get("http://localhost:3000/loggedin");
+   }
+
+   signIn(data: any){
+    return this.httpclient.post("http://localhost:3000/signup",data);
+   }
 }
