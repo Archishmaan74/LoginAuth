@@ -34,11 +34,6 @@ const usrSchema = mongoose.Schema(
 
 const usrModel = mongoose.model("users",usrSchema)
 
-router.get('/loggedin',async(req,res)=>{
-    console.log("Signup display API is working...");
-    res.send(await usrModel.find());
-})
-
 router.post('/signup',async(req,res)=>{
     console.log("Signup API working...")
     console.log("Request Body:", req.body);
@@ -72,6 +67,8 @@ router.post('/signup',async(req,res)=>{
         res.status(400).json({ message: err.message });
     }
 })
+
+router.post("/")
 
 
 module.exports = router;
