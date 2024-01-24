@@ -10,10 +10,6 @@ export class LoginService {
 
    }
 
-   getData(){
-    return this.httpclient.get("http://localhost:3000/loggedin");
-   }
-
    signIn(data: any){
     return this.httpclient.post("http://localhost:3000/signup",data);
    }
