@@ -39,7 +39,7 @@ router.get('/loggedin',async(req,res)=>{
     res.send(await usrModel.find());
 })
 
-router.post('/signupdet',async(req,res)=>{
+router.post('/signup',async(req,res)=>{
     console.log("Signup API working...")
     console.log("Request Body:", req.body);
 
